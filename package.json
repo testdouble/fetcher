@@ -1,0 +1,27 @@
+{
+  "name": "fetcher",
+  "version": "0.0.0",
+  "description": "Fetches libraries based on a JSON recipe in a remote repository",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:testdouble/fetcher.git"
+  },
+  "author": "Justin Searls",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/testdouble/fetcher/issues"
+  },
+  "homepage": "https://github.com/testdouble/fetcher",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-jasmine-bundle": "^0.2.0",
+    "sandboxed-module": "^0.3.0"
+  },
+  "dependencies": {
+    "coffee-script": "^1.7.1"
+  }
+}
