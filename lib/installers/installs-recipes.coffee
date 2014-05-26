@@ -1,7 +1,7 @@
 _ = require('underscore')
 fetcher = require('./../fetcher')
 
-# Required propserties:
+# Required properties:
 #  * name - the name of the recipe to install
 module.exports =
   install: (options, recipeStep, cb) ->

@@ -3,7 +3,7 @@ mkdirp = require('mkdirp')
 downloadsFile = require('./../downloads-file')
 ncp = require('ncp')
 
-# Required propserties:
+# Required properties:
 #  * url - the url of the uncompressed, unminified file
 #  * dest - the location (relative to `options.cwd`) to copy the file.
 module.exports =
