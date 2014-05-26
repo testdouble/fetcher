@@ -1,6 +1,6 @@
 {
   "name": "fetcher",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Fetches libraries based on a JSON recipe in a remote repository",
   "main": "index.js",
   "scripts": {
