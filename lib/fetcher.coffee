@@ -21,7 +21,7 @@ module.exports = (recipeName, options, cb = ->) ->
                     #{recipe.message}
                     ---
                     """
-      cb(null, recipe)
+      cb(null)
   undefined
 
 defaultOptions = ->
