@@ -7,7 +7,7 @@ module.exports = (recipeName, options, cb = ->) ->
     cb = options
     options = null
   options = _({}).extend(defaultOptions(), options)
-  downloadsRecipes.cleanup() unless options.cleanTmpDirBeforeFetching
+  downloadsRecipes.cleanup() if options.cleanTmpDirBeforeFetching
 
   downloadsRecipes.download options.recipeRepo, recipeName, (er, recipe) ->
     return handleError(er, cb) if er?
