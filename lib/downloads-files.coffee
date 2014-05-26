@@ -5,7 +5,7 @@ fs = require('fs')
 
 module.exports =
   download: (url, cb) ->
-    dest = path.resolve(tmp.path(), String(new Date().getTime()))
+    dest = tmp.mkpath("downloads")
     console.log("Downloading '#{url}'...")
     request(url).pipe(fs.createWriteStream(dest)).on 'finish', ->
       cb(null, dest)

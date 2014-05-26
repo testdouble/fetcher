@@ -13,7 +13,7 @@ module.exports = (recipe, options, cb = ->) ->
   tmp.clean() if options.cleanTmpDirBeforeFetching
 
   async.series fetchesFor(options, recipes), (er, results) ->
-    tmp.clean()
+    # tmp.clean() #<--- UNCOMMENT ME OOPS
     cb(if er? then er else null)
 
   return undefined

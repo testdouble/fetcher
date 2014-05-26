@@ -1,7 +1,7 @@
 path = require('path')
 mkdirp = require('mkdirp')
-downloadsFile = require('./../downloads-file')
-ncp = require('ncp')
+downloadsFiles = require('./../downloads-files')
+copiesStuff = require('./../copies-stuff')
 
 # Required properties:
 #  * url - the url of the uncompressed, unminified file
@@ -10,9 +10,9 @@ module.exports =
   install: (options, recipeStep, cb) ->
     dest = path.resolve(options.cwd, recipeStep.dest)
     mkdirp.sync(path.dirname(dest))
-    downloadsFile.download recipeStep.url, (er, src) ->
+    downloadsFiles.download recipeStep.url, (er, src) ->
       return cb(er) if er?
-      ncp src, dest, (er) ->
+      copiesStuff.copy src, dest, (er) ->
         return cb(er) if er?
         console.log("Downloaded '#{recipeStep.url}' to '#{recipeStep.dest}'")
         cb(null)

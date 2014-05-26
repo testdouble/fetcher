@@ -20,3 +20,5 @@ installerFor = (type) ->
       require('./installers/installs-files')
     when "recipe"
       require('./installers/installs-recipes')
+    when "archive"
+      require('./installers/installs-archives')
