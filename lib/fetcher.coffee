@@ -7,8 +7,8 @@ module.exports = (recipe, options, cb = ->) ->
   if _(options).isFunction()
     cb = options
     options = null
-  options = _({}).extend(defaultOptions(), options)
   recipes = if _(recipe).isArray() then recipe else [recipe]
+  options = _({}).extend(defaultOptions(), options)
   downloadsRecipes.cleanup() if options.cleanTmpDirBeforeFetching
 
   async.series fetchesFor(options, recipes), (er, results) ->
@@ -22,10 +22,13 @@ defaultOptions = ->
   recipeRepo: "git@github.com:linemanjs/fetcher-recipes.git"
   cwd: process.cwd()
   cleanTmpDirBeforeFetching: true
+  alreadyInstalledRecipes: []
 
 fetchesFor = (options, recipes) ->
   _(recipes).map (recipeName) ->
     (cb) ->
+      return cb(null) if _(options.alreadyInstalledRecipes).include(recipeName)
+      options.alreadyInstalledRecipes.push(recipeName)
       downloadsRecipes.download options.recipeRepo, recipeName, (er, recipe) ->
         return cb(er) if er?
         installsRecipes.install options, recipe, (er) ->
