@@ -12,26 +12,18 @@
 # on this object would fetch the repo, print the backbone recipe out, and delete the fetched repo.
 #
 path = require('path')
-os = require('os')
-mkdirp = require('mkdirp')
-rimraf = require('rimraf')
 fs = require('fs')
-
-p = path.resolve(os.tmpdir(), "com.testdouble.npm.fetcher", String(new Date().getTime()))
+tmp = require('./tmp')
 
 module.exports =
   download: (gitRepo, recipeName, cb) ->
-    mkdirp.sync(p)
-    repoPath = path.resolve(p, "recipe-repo")
+    repoPath = path.resolve(tmp.path(), "recipe-repo")
     if fs.existsSync(repoPath)
       readRecipe(repoPath, recipeName, cb)
     else
-      cloneGitRepo gitRepo, p, (er) ->
+      cloneGitRepo gitRepo, tmp.path(), (er) ->
         return cb(er) if er?
         readRecipe(repoPath, recipeName, cb)
-
-  cleanup: ->
-    rimraf.sync(p)
 
 which = require('which')
 exec = require("child_process").execFile

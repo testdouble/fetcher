@@ -2,6 +2,7 @@ _ = require('underscore')
 downloadsRecipes = require('./downloads-recipes')
 installsRecipes = require('./installs-recipes')
 async = require('async')
+tmp = require('./tmp')
 
 module.exports = (recipe, options, cb = ->) ->
   if _(options).isFunction()
@@ -9,14 +10,13 @@ module.exports = (recipe, options, cb = ->) ->
     options = null
   recipes = if _(recipe).isArray() then recipe else [recipe]
   options = _({}).extend(defaultOptions(), options)
-  downloadsRecipes.cleanup() if options.cleanTmpDirBeforeFetching
+  tmp.clean() if options.cleanTmpDirBeforeFetching
 
   async.series fetchesFor(options, recipes), (er, results) ->
-    downloadsRecipes.cleanup()
-    return cb(er) if er?
-    cb(null)
+    tmp.clean()
+    cb(if er? then er else null)
 
-  undefined
+  return undefined
 
 defaultOptions = ->
   recipeRepo: "git@github.com:linemanjs/fetcher-recipes.git"
