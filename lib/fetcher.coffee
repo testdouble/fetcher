@@ -1,29 +1,21 @@
 _ = require('underscore')
 downloadsRecipes = require('./downloads-recipes')
 installsRecipes = require('./installs-recipes')
+async = require('async')
 
-module.exports = (recipeName, options, cb = ->) ->
+module.exports = (recipe, options, cb = ->) ->
   if _(options).isFunction()
     cb = options
     options = null
   options = _({}).extend(defaultOptions(), options)
+  recipes = if _(recipe).isArray() then recipe else [recipe]
   downloadsRecipes.cleanup() if options.cleanTmpDirBeforeFetching
 
-  downloadsRecipes.download options.recipeRepo, recipeName, (er, recipe) ->
-    return handleError(er, cb) if er?
-    installsRecipes.install options, recipe, (er) ->
-      return handleError(er, cb) if er?
-      console.log("Successfully installed '#{recipeName}'.")
-      if recipe.message?
-        console.log """
-                    The '#{recipeName}' recipe left you this message:
+  async.series fetchesFor(options, recipes), (er, results) ->
+    downloadsRecipes.cleanup()
+    return cb(er) if er?
+    cb(null)
 
-                    ---
-                    #{recipe.message}
-                    ---
-                    """
-      downloadsRecipes.cleanup()
-      cb(null)
   undefined
 
 defaultOptions = ->
@@ -31,6 +23,20 @@ defaultOptions = ->
   cwd: process.cwd()
   cleanTmpDirBeforeFetching: true
 
-handleError = (er, cb) ->
-  downloadsRecipes.cleanup()
-  cb(er)
+fetchesFor = (options, recipes) ->
+  _(recipes).map (recipeName) ->
+    (cb) ->
+      downloadsRecipes.download options.recipeRepo, recipeName, (er, recipe) ->
+        return cb(er) if er?
+        installsRecipes.install options, recipe, (er) ->
+          return cb(er) if er?
+          console.log("Successfully installed '#{recipeName}'.")
+          if recipe.message?
+            console.log """
+                        The '#{recipeName}' recipe left you this message:
+
+                        ---
+                        #{recipe.message}
+                        ---
+                        """
+          cb(null)
