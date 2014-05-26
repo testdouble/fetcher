@@ -18,3 +18,5 @@ installerFor = (type) ->
   switch (type || "file")
     when "file"
       require('./installers/installs-files')
+    when "recipe"
+      require('./installers/installs-recipes')
