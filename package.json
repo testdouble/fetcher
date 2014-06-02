@@ -1,6 +1,6 @@
 {
   "name": "fetcher",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Fetches libraries based on a JSON recipe in a remote repository",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,6 @@
   },
   "homepage": "https://github.com/testdouble/fetcher",
   "devDependencies": {
-    "decompress": "^0.2.3",
     "grunt": "^0.4.5",
     "grunt-jasmine-bundle": "^0.2.0",
     "sandboxed-module": "^0.3.0"
@@ -27,6 +26,7 @@
     "coffee-script": "^1.7.1",
     "cpr": "^0.2.0",
     "cson-safe": "^0.1.1",
+    "decompress": "^0.2.3",
     "mkdirp": "^0.5.0",
     "request": "^2.36.0",
     "rimraf": "^2.2.8",
