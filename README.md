@@ -31,3 +31,15 @@ An optional options argument can be passed as a second parameter of `fetcher()`.
 ```
 
 That means you can use Fetcher with your own custom tool ecosystem by defining your own recipe repo. You can also define `cwd` to whatever you like in order to install assets relative to whatever path you're interested in.
+
+## Testing fetcher
+
+fetcher currently has no automated tests. To get any feedback, I recommend cloning or starting a recipes repo to work against, then
+running fetcher out of its own directory and manually inspecting results:
+
+```
+$ node
+> require('./index')('google-analytics', {recipeRepo: "/Users/justin/code/linemanjs/fetcher-recipes"}, function(err) { console.log("errors!", err); })
+```
+
+And then inspecting that `vendor/js/google-analytics.js` is how it should be, given that recipe.

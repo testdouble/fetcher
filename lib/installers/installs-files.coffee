@@ -2,6 +2,7 @@ path = require('path')
 mkdirp = require('mkdirp')
 downloadsFiles = require('./../downloads-files')
 copiesStuff = require('./../copies-stuff')
+copiesFileWithModifications = require('./../copies-file-with-modifications')
 
 # Required properties:
 #  * url - the url of the uncompressed, unminified file
@@ -12,7 +13,19 @@ module.exports =
     mkdirp.sync(path.dirname(dest))
     downloadsFiles.download recipeStep.url, (er, src) ->
       return cb(er) if er?
-      copiesStuff.copy src, dest, (er) ->
-        return cb(er) if er?
-        console.log("Downloaded '#{recipeStep.url}' to '#{recipeStep.dest}'")
-        cb(null)
+      if recipeStep.prepend? || recipeStep.append?
+        copiesFileWithModifications.copy src, dest, (originalContent) ->
+          """
+          #{recipeStep.prepend || ""}
+          #{originalContent}
+          #{recipeStep.append || ""}
+          """
+        , (er) ->
+          return cb(er) if er?
+          console.log("Downloaded '#{recipeStep.url}' to '#{recipeStep.dest}' with custom content.")
+          cb(null)
+      else
+        copiesStuff.copy src, dest, (er) ->
+          return cb(er) if er?
+          console.log("Downloaded '#{recipeStep.url}' to '#{recipeStep.dest}'")
+          cb(null)
