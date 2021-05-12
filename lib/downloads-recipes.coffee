@@ -33,7 +33,7 @@ cloneGitRepo = (gitRepo, cwd, cb) ->
     return cb(er) if er?
     cb(null)
 
-CSON = require('cson-safe')
+CSON = require('cson')
 readRecipe = (repoPath, recipeName, cb) ->
   recipePath = path.resolve(repoPath, "recipes", "#{recipeName}.cson")
   return cb(new Error("Recipe '#{recipeName}' was not found.")) unless fs.existsSync(recipePath)
